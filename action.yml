@@ -1,0 +1,37 @@
+name: Build documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-docs:
+    runs-on: python:${{ inputs.python-version }}-buster
+    outputs:
+      built_dir: ${{ steps.build.outputs.built_dir }}
+
+    steps:
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r ${{ inputs.requirements-file }}
+
+    - name: Build documentation
+      id: build
+      depends-on: Install dependencies
+      run: |
+          mkdocs build -d public
+          echo "::set-output name=built_dir::$PWD/public"
+      # this line is for saving the built directory path in a variable `built_dir`
+
+inputs:
+  python-version:
+    description: The Python version to use.
+    default: '3.9'
+    required: true
+  requirements-file:
+    description: The file path of requirements.txt containing the packages that should be installed in the environment
+    default: 'requirements.txt'
+    required: true
