@@ -22,6 +22,7 @@ jobs:
       id: build
       depends-on: Install dependencies
       run: |
+          cd ${{ inputs.docs-build-path }}
           mkdocs build -d public
           echo "::set-output name=built_dir::$PWD/public"
       # this line is for saving the built directory path in a variable `built_dir`
@@ -34,4 +35,8 @@ inputs:
   requirements-file:
     description: The file path of requirements.txt containing the packages that should be installed in the environment
     default: 'requirements.txt'
+    required: true
+  docs-build-path:
+    description: The directory that should contain the built site
+    default: './'
     required: true
