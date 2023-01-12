@@ -1,10 +1,5 @@
 name: Build documentation
 
-on:
-  push:
-    branches:
-      - main
-
 jobs:
   build-docs:
     runs-on: python:${{ inputs.python-version }}-buster
@@ -24,7 +19,7 @@ jobs:
       run: |
           cd ${{ inputs.docs-build-path }}
           mkdocs build -d public
-          echo "::set-output name=built_dir::$PWD/public"
+          echo "::set-output name=built_dir::public"
       # this line is for saving the built directory path in a variable `built_dir`
 
 inputs:
